@@ -9,6 +9,7 @@ import cn.com.china.dfc.cinema.manager.CoverFlowLayoutManger;
 
 /**
  * 继承RecyclerView重写{@link #getChildDrawingOrder(int, int)}对Item的绘制顺序进行控制
+ *
  * @author Chen Xiaoping (562818444@qq.com)
  * @version V1.0
  * @Datetime 2017-04-18
@@ -24,6 +25,8 @@ public class RecyclerCoverFlow extends RecyclerView {
      * 布局器构建者
      */
     private CoverFlowLayoutManger.Builder mManagerBuilder;
+
+    private double scale;               //抛掷速度的缩放因子
 
     public RecyclerCoverFlow(Context context) {
         super(context);
@@ -58,6 +61,7 @@ public class RecyclerCoverFlow extends RecyclerView {
 
     /**
      * 设置是否为普通平面滚动
+     *
      * @param isFlat true:平面滚动；false:叠加缩放滚动
      */
     public void setFlatFlow(boolean isFlat) {
@@ -68,6 +72,7 @@ public class RecyclerCoverFlow extends RecyclerView {
 
     /**
      * 设置Item灰度渐变
+     *
      * @param greyItem true:Item灰度渐变；false:Item灰度不变
      */
     public void setGreyItem(boolean greyItem) {
@@ -78,6 +83,7 @@ public class RecyclerCoverFlow extends RecyclerView {
 
     /**
      * 设置Item灰度渐变
+     *
      * @param alphaItem true:Item半透渐变；false:Item透明度不变
      */
     public void setAlphaItem(boolean alphaItem) {
@@ -88,6 +94,7 @@ public class RecyclerCoverFlow extends RecyclerView {
 
     /**
      * 设置Item的间隔比例
+     *
      * @param intervalRatio Item间隔比例。
      *                      即：item的宽 x intervalRatio
      */
@@ -126,7 +133,7 @@ public class RecyclerCoverFlow extends RecyclerView {
      * 获取LayoutManger，并强制转换为CoverFlowLayoutManger
      */
     public CoverFlowLayoutManger getCoverFlowLayout() {
-        return ((CoverFlowLayoutManger)getLayoutManager());
+        return ((CoverFlowLayoutManger) getLayoutManager());
     }
 
     /**
@@ -138,10 +145,15 @@ public class RecyclerCoverFlow extends RecyclerView {
 
     /**
      * 设置选中监听
+     *
      * @param l 监听接口
      */
     public void setOnItemSelectedListener(CoverFlowLayoutManger.OnSelected l) {
         getCoverFlowLayout().setOnSelectedListener(l);
+    }
+
+    public void setOnDragListener(CoverFlowLayoutManger.OnDrag d) {
+        getCoverFlowLayout().setOnDrag(d);
     }
 
     @Override
@@ -154,7 +166,7 @@ public class RecyclerCoverFlow extends RecyclerView {
             case MotionEvent.ACTION_MOVE:
                 if ((ev.getX() > mDownX && getCoverFlowLayout().getCenterPosition() == 0) ||
                         (ev.getX() < mDownX && getCoverFlowLayout().getCenterPosition() ==
-                                getCoverFlowLayout().getItemCount() -1)) {
+                                getCoverFlowLayout().getItemCount() - 1)) {
                     //如果是滑动到了最前和最后，开放父类滑动事件拦截
                     getParent().requestDisallowInterceptTouchEvent(false);
                 } else {
@@ -164,5 +176,15 @@ public class RecyclerCoverFlow extends RecyclerView {
                 break;
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public boolean fling(int velocityX, int velocityY) {
+        velocityX *= scale;
+        return super.fling(velocityX, velocityY);
+    }
+
+    public void setFlingScale(double scale){
+        this.scale = scale;
     }
 }

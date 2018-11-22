@@ -11,8 +11,8 @@ import cn.com.china.dfc.cinema.R
 import cn.com.china.dfc.cinema.adapter.HostTicketAdapter
 import cn.com.china.dfc.cinema.entity.TicketMultipleItemEntity
 import cn.com.china.dfc.cinema.entity.TicketMultipleItemEntity.Companion.TICKET_HOT_MOVIE
+import com.blankj.utilcode.util.AdaptScreenUtils
 import com.blankj.utilcode.util.BarUtils
-import com.blankj.utilcode.util.ToastUtils
 import com.junlong0716.base.module.base.BaseFragment
 import io.reactivex.Observable
 import io.reactivex.Observer
@@ -28,7 +28,8 @@ import java.util.concurrent.TimeUnit
  *@date: Created in 2018/11/20 3:23 PM
  *@modified by:
  */
-class HostTicketFragment : BaseFragment<HostTicketPresenter>(), HostTicketContract.View {
+class HostTicketFragment : BaseFragment<HostTicketPresenter>(), HostTicketContract.View,
+    HostTicketAdapter.OnDragListener {
     private lateinit var mTicketList: ArrayList<TicketMultipleItemEntity>
     private var mCoverFlowPage = 0
     lateinit var mHostTicketAdapter: HostTicketAdapter
@@ -54,6 +55,9 @@ class HostTicketFragment : BaseFragment<HostTicketPresenter>(), HostTicketContra
     override fun getLayoutId(): Int = R.layout.host_fragment_ticket
 
     override fun initViews(mRootView: View?) {
+        AdaptScreenUtils.adaptHeight(super.getResources(),749)
+        AdaptScreenUtils.adaptWidth(super.getResources(),375)
+
         val titleBarContainer = mRootView!!.findViewById<View>(R.id.host_include_title_bar)
         val tvTitle = titleBarContainer!!.findViewById<TextView>(R.id.host_tv_title)
         val flTitleBarContainer = titleBarContainer.findViewById<FrameLayout>(R.id.host_fl_title_bar_container)
@@ -63,9 +67,12 @@ class HostTicketFragment : BaseFragment<HostTicketPresenter>(), HostTicketContra
         mTicketList = ArrayList()
         mTicketList.add(TicketMultipleItemEntity(TICKET_HOT_MOVIE))
         rvList.layoutManager = LinearLayoutManager(activity!!.applicationContext)
-        mHostTicketAdapter = HostTicketAdapter(mTicketList)
+        mHostTicketAdapter = HostTicketAdapter(mTicketList, this)
         rvList.adapter = mHostTicketAdapter
+        startCoverFlowRv()
+    }
 
+    private fun startCoverFlowRv() {
         Observable.interval(0, 5, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -93,6 +100,7 @@ class HostTicketFragment : BaseFragment<HostTicketPresenter>(), HostTicketContra
 
                 }
             })
+
     }
 
 
@@ -105,5 +113,20 @@ class HostTicketFragment : BaseFragment<HostTicketPresenter>(), HostTicketContra
         if (mDisposable != null && !mDisposable!!.isDisposed) {
             mDisposable!!.dispose()
         }
+    }
+
+
+    override fun onDragFinishListener() {
+        //startCoverFlowRv()
+    }
+
+    override fun onDragListener() {
+        if (mDisposable != null && !mDisposable!!.isDisposed) {
+            mDisposable!!.dispose()
+        }
+    }
+
+    override fun onSelectedListener(pos: Int) {
+        mCoverFlowPage = pos
     }
 }

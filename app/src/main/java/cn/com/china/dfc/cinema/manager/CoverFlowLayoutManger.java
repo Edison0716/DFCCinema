@@ -51,7 +51,7 @@ public class CoverFlowLayoutManger extends RecyclerView.LayoutManager {
     /**
      * Item间隔与item宽的比例
      */
-    private float mIntervalRatio = 0.3f;
+    private float mIntervalRatio = 0.5f;
 
     /**
      * 起始ItemX坐标
@@ -113,6 +113,13 @@ public class CoverFlowLayoutManger extends RecyclerView.LayoutManager {
      */
     private OnSelected mSelectedListener;
 
+
+    /**
+     * 拖拽监听
+     */
+    private OnDrag mDragListener;
+
+
     /**
      * 是否为平面滚动，Item之间没有叠加，也没有缩放
      */
@@ -162,15 +169,16 @@ public class CoverFlowLayoutManger extends RecyclerView.LayoutManager {
         View scrap = recycler.getViewForPosition(0);
         addView(scrap);
         measureChildWithMargins(scrap, 0, 0);
+
         //计算测量布局的宽高
         mDecoratedChildWidth = getDecoratedMeasuredWidth(scrap);
         mDecoratedChildHeight = getDecoratedMeasuredHeight(scrap);
-        mStartX = Math.round((getHorizontalSpace() - mDecoratedChildWidth) * 1.0f / 2);
-        mStartY = Math.round((getVerticalSpace() - mDecoratedChildHeight) * 1.0f / 2);
+        mStartX = Math.round((getHorizontalSpace() - mDecoratedChildWidth) * 1.0f / 4);
+        mStartY = Math.round((getVerticalSpace() - mDecoratedChildHeight) * 1.0f / 4);
 
         float offset = mStartX;
 
-        /**只存{@link MAX_RECT_COUNT}个item具体位置*/
+        /*只存{@link MAX_RECT_COUNT}个item具体位置*/
         for (int i = 0; i < getItemCount() && i < MAX_RECT_COUNT; i++) {
             Rect frame = mAllItemFrames.get(i);
             if (frame == null) {
@@ -336,10 +344,11 @@ public class CoverFlowLayoutManger extends RecyclerView.LayoutManager {
             case RecyclerView.SCROLL_STATE_IDLE:
                 //滚动停止时
                 fixOffsetWhenFinishScroll();
+                mDragListener.onDragFinishListener();
                 break;
             case RecyclerView.SCROLL_STATE_DRAGGING:
                 //拖拽滚动时
-
+                mDragListener.onDragListener();
                 break;
             case RecyclerView.SCROLL_STATE_SETTLING:
                 //动画滚动时
@@ -581,6 +590,7 @@ public class CoverFlowLayoutManger extends RecyclerView.LayoutManager {
      * <p>Note:该方法主要用于{@link RecyclerCoverFlow#getChildDrawingOrder(int, int)}判断中间位置
      * <p>如果需要获取被选中的Item位置，调用{@link #getSelectedPos()}
      */
+
     public int getCenterPosition() {
         int pos = (int) (mOffsetAll / getIntervalDistance());
         int more = (int) (mOffsetAll % getIntervalDistance());
@@ -595,6 +605,10 @@ public class CoverFlowLayoutManger extends RecyclerView.LayoutManager {
      */
     public void setOnSelectedListener(OnSelected l) {
         mSelectedListener = l;
+    }
+
+    public void setOnDrag(OnDrag d){
+        mDragListener = d;
     }
 
     /**
@@ -615,6 +629,19 @@ public class CoverFlowLayoutManger extends RecyclerView.LayoutManager {
          */
         void onItemSelected(int position);
     }
+
+    public interface OnDrag {
+        /**
+         * 开始拖拽监听
+         */
+        void onDragListener();
+
+        /**
+         * 拖拽完成监听
+         */
+        void onDragFinishListener();
+    }
+
 
     public static class Builder {
         boolean isFlat = false;
