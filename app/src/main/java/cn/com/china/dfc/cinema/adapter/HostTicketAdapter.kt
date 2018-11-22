@@ -1,17 +1,19 @@
 package cn.com.china.dfc.cinema.adapter
 
 import android.content.Context
-import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import cn.com.china.dfc.cinema.R
 import cn.com.china.dfc.cinema.entity.CoverFlowEntity
 import cn.com.china.dfc.cinema.entity.TicketMultipleItemEntity
 import cn.com.china.dfc.cinema.manager.CoverFlowLayoutManger
 import cn.com.china.dfc.cinema.widget.RecyclerCoverFlow
-import com.blankj.utilcode.util.ToastUtils
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
-import android.support.v7.widget.LinearSnapHelper
-import android.support.v7.widget.PagerSnapHelper
+import com.junlong0716.base.module.manager.GlideImageLoader
+import com.junlong0716.base.module.rvdecoration.SpaceItemDecoration
+import com.junlong0716.base.module.widget.RoundedBanner
+import com.youth.banner.BannerConfig
 
 
 /**
@@ -25,6 +27,7 @@ class HostTicketAdapter(data: ArrayList<TicketMultipleItemEntity>, onDragListene
     private lateinit var mCoverFlowData: ArrayList<CoverFlowEntity>
     private lateinit var rvCoverList: RecyclerCoverFlow
     private lateinit var mHostCoverFlowAdapter: HostCoverFlowAdapter
+    private lateinit var bannerImg: ArrayList<Int>
     private var mOnDragListener = onDragListener
 
     init {
@@ -44,11 +47,62 @@ class HostTicketAdapter(data: ArrayList<TicketMultipleItemEntity>, onDragListene
             }
 
             TicketMultipleItemEntity.TICKET_CINEMA_NOTICE -> {
+                bannerImg = ArrayList()
+                bannerImg.add(R.mipmap.host_banner_test)
+                bannerImg.add(R.mipmap.host_banner_test)
+                bannerImg.add(R.mipmap.host_banner_test)
 
+                val roundedBanner = helper.getView<RoundedBanner>(R.id.host_banner)
+                //设置指示器样式
+                roundedBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+
+                //设置指示器位置
+                roundedBanner.setIndicatorGravity(BannerConfig.CENTER)
+
+                //设置图片加载器
+                roundedBanner.setImageLoader(GlideImageLoader())
+
+                //设置自动播放
+                roundedBanner.isAutoPlay(true)
+
+                //设置延迟时间
+                roundedBanner.setDelayTime(5000)
+
+                //设置图片
+                roundedBanner.setImages(bannerImg)
+
+                //开始轮播
+                roundedBanner.start()
             }
 
             TicketMultipleItemEntity.TICKET_MOVIE_COMING_SOON -> {
-
+                val data = ArrayList<String>()
+                data.add("")
+                data.add("")
+                data.add("")
+                data.add("")
+                data.add("")
+                data.add("")
+                data.add("")
+                data.add("")
+                data.add("")
+                data.add("")
+                data.add("")
+                data.add("")
+                data.add("")
+                data.add("")
+                data.add("")
+                data.add("")
+                data.add("")
+                data.add("")
+                data.add("")
+                val rvComingSoon = helper.getView<RecyclerView>(R.id.host_rv_coming_soon)
+                val manager = GridLayoutManager(mContext, 4)
+                manager.isAutoMeasureEnabled = true
+                rvComingSoon.layoutManager = manager
+                rvComingSoon.isNestedScrollingEnabled = false
+                rvComingSoon.adapter = HostComingSoonAdapter(data,R.layout.host_item_ticket_coming_soon_movie)
+                rvComingSoon.addItemDecoration(SpaceItemDecoration(20))
             }
             else -> {
             }

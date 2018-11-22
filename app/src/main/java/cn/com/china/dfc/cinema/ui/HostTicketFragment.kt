@@ -4,13 +4,16 @@ import android.os.Handler
 import android.os.Message
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import cn.com.china.dfc.cinema.R
 import cn.com.china.dfc.cinema.adapter.HostTicketAdapter
 import cn.com.china.dfc.cinema.entity.TicketMultipleItemEntity
+import cn.com.china.dfc.cinema.entity.TicketMultipleItemEntity.Companion.TICKET_CINEMA_NOTICE
 import cn.com.china.dfc.cinema.entity.TicketMultipleItemEntity.Companion.TICKET_HOT_MOVIE
+import cn.com.china.dfc.cinema.entity.TicketMultipleItemEntity.Companion.TICKET_MOVIE_COMING_SOON
 import com.blankj.utilcode.util.AdaptScreenUtils
 import com.blankj.utilcode.util.BarUtils
 import com.junlong0716.base.module.base.BaseFragment
@@ -66,10 +69,14 @@ class HostTicketFragment : BaseFragment<HostTicketPresenter>(), HostTicketContra
         val rvList = mRootView.findViewById<RecyclerView>(R.id.host_rv_list)
         mTicketList = ArrayList()
         mTicketList.add(TicketMultipleItemEntity(TICKET_HOT_MOVIE))
+        mTicketList.add(TicketMultipleItemEntity(TICKET_CINEMA_NOTICE))
+        mTicketList.add(TicketMultipleItemEntity(TICKET_MOVIE_COMING_SOON))
         rvList.layoutManager = LinearLayoutManager(activity!!.applicationContext)
         mHostTicketAdapter = HostTicketAdapter(mTicketList, this)
         rvList.adapter = mHostTicketAdapter
         startCoverFlowRv()
+        val headerView = LayoutInflater.from(activity).inflate(R.layout.host_item_ticket_header,null)
+        mHostTicketAdapter.addHeaderView(headerView)
     }
 
     private fun startCoverFlowRv() {

@@ -26,6 +26,7 @@ class HostHomeActivity : BaseActivity<HostHomePresenter>(), HostHomeContract.Vie
     }
 
     private fun initListener() {
+
         host_ll_ticket.setOnClickListener(this)
         host_ll_goods.setOnClickListener(this)
         host_ll_mine.setOnClickListener(this)
