@@ -10,4 +10,4 @@
 ---即将上映完成</br>
 2、屏幕适配</br>
 
-<img src="https://github.com/Jack1995/DFCCinema/blob/master/screenshot/home_ticket.jpg" width="720"/>
+<img src="https://github.com/Jack1995/DFCCinema/blob/master/screenshot/home_ticket.jpg" width="360"/>
