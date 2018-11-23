@@ -24,6 +24,9 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.lang.ref.WeakReference
 import java.util.concurrent.TimeUnit
+import android.view.ViewGroup
+
+
 
 /**
  *@author: EdsionLi
@@ -71,7 +74,15 @@ class HostTicketFragment : BaseFragment<HostTicketPresenter>(), HostTicketContra
         mTicketList.add(TicketMultipleItemEntity(TICKET_HOT_MOVIE))
         mTicketList.add(TicketMultipleItemEntity(TICKET_CINEMA_NOTICE))
         mTicketList.add(TicketMultipleItemEntity(TICKET_MOVIE_COMING_SOON))
-        rvList.layoutManager = LinearLayoutManager(activity!!.applicationContext)
+
+        rvList.layoutManager = object :LinearLayoutManager(activity!!.applicationContext){
+            override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams {
+                return RecyclerView.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+            }
+        }
         mHostTicketAdapter = HostTicketAdapter(mTicketList, this)
         rvList.adapter = mHostTicketAdapter
         startCoverFlowRv()
