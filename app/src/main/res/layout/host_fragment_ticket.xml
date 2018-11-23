@@ -7,6 +7,7 @@
 
     <include layout="@layout/host_layout_title_bar" app:layout_constraintTop_toTopOf="parent" android:id="@+id/host_include_title_bar" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
 
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/host_refresh_layout"
             android:layout_width="match_parent"

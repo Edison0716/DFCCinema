@@ -3,6 +3,10 @@ package cn.com.china.dfc.cinema
 import android.content.Context
 import com.didi.virtualapk.PluginManager
 import com.junlong0716.base.module.BaseApplication
+import com.orhanobut.logger.Logger
+import com.orhanobut.logger.AndroidLogAdapter
+
+
 
 /**
  *@author: EdsionLi
@@ -13,6 +17,7 @@ import com.junlong0716.base.module.BaseApplication
 class MyApp : BaseApplication() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
-        PluginManager.getInstance(base).init();
+        PluginManager.getInstance(base).init()
+        Logger.addLogAdapter(AndroidLogAdapter())
     }
 }
