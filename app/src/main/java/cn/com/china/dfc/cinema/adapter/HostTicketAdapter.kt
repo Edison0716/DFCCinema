@@ -84,7 +84,7 @@ class HostTicketAdapter(data: ArrayList<TicketMultipleItemEntity>, onDragListene
 
             TicketMultipleItemEntity.TICKET_MOVIE_COMING_SOON -> {
                 val data = ArrayList<String>()
-                for (i in 0 until 32) {
+                for (i in 0 until 8) {
                     data.add("")
                 }
 
