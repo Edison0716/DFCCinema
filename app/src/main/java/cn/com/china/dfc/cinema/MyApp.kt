@@ -16,12 +16,11 @@ import com.orhanobut.logger.AndroidLogAdapter
 class MyApp : BaseApplication() {
     override fun onCreate() {
         super.onCreate()
-
+        Logger.addLogAdapter(AndroidLogAdapter())
     }
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         PluginManager.getInstance(base).init()
-        Logger.addLogAdapter(AndroidLogAdapter())
     }
 }
