@@ -1,9 +1,7 @@
 package cn.com.china.dfc.cinema.ui
 
-import android.graphics.Color
 import android.os.Handler
 import android.os.Message
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -20,7 +18,6 @@ import cn.com.china.dfc.cinema.entity.TicketMultipleItemEntity.Companion.TICKET_
 import com.blankj.utilcode.util.AdaptScreenUtils
 import com.blankj.utilcode.util.BarUtils
 import com.junlong0716.base.module.base.BaseFragment
-import com.orhanobut.logger.Logger
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -46,7 +43,7 @@ class HostTicketFragment : BaseFragment<HostTicketPresenter>(), HostTicketContra
     private var overallXScroll = 0//用来记住滑动的距离
     private val height = 100// 滑动开始变色的高,真实项目中此高度是由广告轮播或其他首页view高度决定
     private lateinit var mTvTitle: TextView
-    private lateinit var mTvCinemaAddress:TextView
+    private lateinit var mTvCinemaAddress: TextView
 
     companion object {
         private class WithoutLeakHandler(fragment: HostTicketFragment) : Handler() {
@@ -57,7 +54,6 @@ class HostTicketFragment : BaseFragment<HostTicketPresenter>(), HostTicketContra
             }
         }
     }
-
 
     override fun attachPresenter() {
         mPresenter = HostTicketPresenter()
@@ -102,7 +98,7 @@ class HostTicketFragment : BaseFragment<HostTicketPresenter>(), HostTicketContra
                 overallXScroll += dy// 累加y值 解决滑动一半y值为0
                 when {
                     overallXScroll <= 0 -> {
-                       // mTvTitle.setTextColor(Color.argb(255, 0, 0, 0))
+                        // mTvTitle.setTextColor(Color.argb(255, 0, 0, 0))
                         mTvCinemaAddress.visibility = View.GONE
                         mTvTitle.visibility = View.VISIBLE
                     }
@@ -113,11 +109,10 @@ class HostTicketFragment : BaseFragment<HostTicketPresenter>(), HostTicketContra
 //                        mTvTitle.setTextColor(Color.argb(alpha.toInt(), 0, 0, 0))
                         mTvCinemaAddress.visibility = View.GONE
                         mTvTitle.visibility = View.VISIBLE
-
-                      //  mTvTitle.setTextColor(Color.argb(255, 0, 0, 0))
+                        //  mTvTitle.setTextColor(Color.argb(255, 0, 0, 0))
                     }
-                    overallXScroll > height ->{
-                   //     mTvTitle.setTextColor(Color.argb(0, 0, 0, 0))
+                    overallXScroll > height -> {
+                        //     mTvTitle.setTextColor(Color.argb(0, 0, 0, 0))
                         mTvCinemaAddress.visibility = View.VISIBLE
                         mTvTitle.visibility = View.GONE
                     }
