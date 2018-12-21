@@ -10,6 +10,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/common_AppBaseTheme">
+
         <activity android:name=".ui.HostHomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
